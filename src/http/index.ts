@@ -1,6 +1,6 @@
 import axios, { AxiosRequestHeaders } from 'axios';
 
-const baseURL = 'http://localhost:3001/api';
+export const baseURL = 'http://localhost:5001/api';
 
 const $api = axios.create({
     withCredentials: true, // Automatically adds cookies
