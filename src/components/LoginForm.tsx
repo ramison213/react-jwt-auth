@@ -1,12 +1,11 @@
-import React, { FC, useContext, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { StoreContext } from '../index';
+import { authStore } from '../store/authStore';
 
 // TODO make two components Login, RegisterForm
 export const LoginForm: FC = observer(() => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    const {store} = useContext(StoreContext);
 
     return (
         <>
@@ -33,12 +32,12 @@ export const LoginForm: FC = observer(() => {
                 <br/>
                 <br/>
 
-                <button onClick={() => store.login(email, password)}>Sign In</button>
+                <button onClick={() => authStore.login(email, password)}>Sign In</button>
 
                 <br/>
                 <br/>
 
-                <button onClick={() => store.registration(email, password)}>Sign Up</button>
+                <button onClick={() => authStore.registration(email, password)}>Sign Up</button>
             </div>
         </>
 

@@ -5,7 +5,7 @@ import axios, { AxiosError } from 'axios';
 import { AuthResponse } from '../models/response/AuthResponse';
 import { baseURL } from '../http';
 
-export default class AuthStore {
+class AuthStore {
     user = {} as IUser;
     isAuth = false;
 
@@ -13,39 +13,39 @@ export default class AuthStore {
         makeAutoObservable(this);
     }
 
-    setAuth(bool: boolean) {
+    setAuth = (bool: boolean) => {
         this.isAuth = bool;
     }
 
-    setUser(user: IUser) {
+    setUser = (user: IUser) => {
         this.user = user;
     }
 
-    async login(email: string, password: string) {
+    login = async (email: string, password: string) => {
         try {
             const response = await AuthService.login(email, password);
-            console.log(response);
+            console.log('login resp:', response);
             localStorage.setItem('token', response.data.accessToken);
             this.setAuth(true);
             this.setUser(response.data.user);
         } catch (err: AxiosError | any) {
-            console.log(err.response?.data?.message);
+            console.log('login err:', err.response?.data?.message);
         }
     }
 
-    async registration(email: string, password: string) {
+    registration = async (email: string, password: string) => {
         try {
             const response = await AuthService.registration(email, password);
-            console.log(response);
+            console.log('registration resp:', response);
             localStorage.setItem('token', response.data.accessToken);
             this.setAuth(true);
             this.setUser(response.data.user);
         } catch (err: AxiosError | any) {
-            console.log(err.response?.data?.message);
+            console.log('registration err:', err.response?.data?.message);
         }
     }
 
-    async logout() {
+    logout = async () => {
         try {
             const response = await AuthService.logout();
             console.log(response);
@@ -53,22 +53,24 @@ export default class AuthStore {
             this.setAuth(false);
             this.setUser({} as IUser);
         } catch (err: AxiosError | any) {
-            console.log(err.response?.data?.message);
+            console.log('logout err:', err.response?.data?.message);
         }
     }
 
-    async checkAuth() {
-        try {
-            const response = await axios.get<AuthResponse>(
-                `${baseURL}/refresh`,
-                {withCredentials: true}
-            );
-            localStorage.setItem('token', response.data.accessToken);
-            console.log(response);
-            this.setAuth(true);
-            this.setUser(response.data.user);
-        } catch (err: AxiosError | any) {
-            console.log(err.response?.data?.message);
-        }
+    checkAuth = async () => {
+        // try {
+        //     const response = await axios.post<AuthResponse>(
+        //         `${baseURL}/refresh`,
+        //         {withCredentials: true}
+        //     );
+        //     localStorage.setItem('token', response.data.accessToken);
+        //     console.log('checkAuth resp:', response);
+        //     this.setAuth(true);
+        //     this.setUser(response.data.user);
+        // } catch (err: AxiosError | any) {
+        //     console.log('checkAuth err:', err.response?.data?.message);
+        // }
     }
 }
+
+export const authStore = new AuthStore();
